@@ -1,0 +1,25 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def visualize_column(df, column):
+
+    # Boxplot
+    plt.figure(figsize=(6, 4))
+    sns.boxplot(y=df[column])
+    plt.title("Boxplot of " + column)
+    plt.show()
+
+    # Scatter plot
+    plt.figure(figsize=(6, 4))
+    sns.scatterplot(x=df.index, y=df[column])
+    plt.xlabel("Index")
+    plt.ylabel(column)
+    plt.title("Scatter Plot of " + column)
+    plt.show()
+
+
+# Example
+df = pd.read_csv("data.csv")
+
+visualize_column(df, "Age")
