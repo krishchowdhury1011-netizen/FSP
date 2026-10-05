@@ -1,0 +1,32 @@
+import pandas as pd
+
+from sklearn.linear_model import Ridge
+from sklearn.model_selection import KFold, cross_val_score
+
+# Load dataset
+df = pd.read_csv("data.csv")
+
+X = df.drop("target", axis=1)
+y = df["target"]
+
+# Ridge Regression
+model = Ridge(alpha=1.0)
+
+# 5-fold cross-validation
+kf = KFold(
+    n_splits=5,
+    shuffle=True,
+    random_state=42
+)
+
+scores = cross_val_score(
+    model,
+    X,
+    y,
+    cv=kf,
+    scoring="r2"
+)
+
+print("R2 Scores:", scores)
+print("Mean R2:", scores.mean())
+print("Standard Deviation:", scores.std())
