@@ -1,0 +1,42 @@
+import pandas as pd
+
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+
+# Load dataset
+df = pd.read_csv("data.csv")
+
+X = df.drop("target", axis=1)
+y = df["target"]
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Random Forest model
+rf = RandomForestClassifier(random_state=42)
+
+# Hyperparameter combinations
+param_grid = {
+    "n_estimators": [50, 100, 200],
+    "max_depth": [None, 10, 20]
+}
+
+# Grid Search
+grid = GridSearchCV(
+    estimator=rf,
+    param_grid=param_grid,
+    cv=5,
+    scoring="accuracy"
+)
+
+# Train
+grid.fit(X_train, y_train)
+
+# Results
+print("Best Parameters:", grid.best_params_)
+print("Best CV Score:", grid.best_score_)
+
+# Evaluate best model on test set
+print("Test Accuracy:", grid.score(X_test, y_test))
